@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @SpringBootTest
 public class BookingRepositoryIntegrationTest {
@@ -17,8 +20,18 @@ public class BookingRepositoryIntegrationTest {
     private IBookingRepository bookingRepository;
 
     @Test
-    public void whenSavingBooking_thenSuccess() {
-
+    public void givenBookingSaved_ThenSuccess() {
+        Booking booking = new Booking(1l, "Booking Test Name");
+        assertNotNull(bookingRepository.save(booking));
     }
+
+//    @Test
+//    public void givenBookingCreated_thenFindByIdSuccess() {
+//        Booking newBooking = new Booking(1l, "Booking Test Name");
+//        bookingRepository.save(newBooking);
+//
+//        Optional<Booking> retrievedBooking = bookingRepository.findById(newBooking.getId());
+//        assertEquals(retrievedBooking.get(), newBooking);
+//    }
 
 }

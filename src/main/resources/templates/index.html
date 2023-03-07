@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Terrific Tacos</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+<body>
+<div style="text-align: center;">
+<img th:src="@{images/terrific-tacos.png}" width="700"/>
+
+<!--    <p>-->
+<!--        Today's special:-->
+<!--        <span th:text="${BookingsController.getTodaysSpecial()}"></span>-->
+<!--    </p>-->
+
+<p>
+    <a th:href="@{/bookings/new}" class="btn btn-link">Make a new booking</a>
+</p>
+
+    <p>
+        <a th:href="@{/bookings}" class="btn btn-link">View Bookings</a>
+    </p>
+
+    <p>
+        Created by <a href ='mailto:jamesrichardson15@gmail.com'>James Richardson</a>
+    </p>
+
+</div>
+</body>
+</html>
