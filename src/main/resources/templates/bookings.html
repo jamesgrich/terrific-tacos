@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Terrific Tacos :: View Bookings</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<table class="table col-md-6 ml-3">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Number Of Guests</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:if="${#lists.isEmpty(bookings)}">
+        <td>It doesn't look like there are any bookings currently</td>
+    </tr>
+
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}"></td>
+        <td th:text="${booking.name}"></td>
+        <td th:text="${booking.date}"></td>
+        <td th:text="${booking.guests}"></td>
+        <td>Edit</td>
+        <td>Delete</td>
+    </tr>
+    </tbody>
+</table>
+
+    <p>
+        <a th:href="@{/bookings/new}" class="btn btn-link">Make another booking</a>
+    </p>
+
+    <p>
+        <a th:href="@{/}" class="btn btn-link">Home</a>
+    </p>
+
+</body>
+</html>

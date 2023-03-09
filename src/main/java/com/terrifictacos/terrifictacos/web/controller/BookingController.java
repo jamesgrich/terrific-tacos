@@ -2,12 +2,16 @@ package com.terrifictacos.terrifictacos.web.controller;
 
 import javax.validation.Valid;
 import java.awt.print.Book;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.terrifictacos.terrifictacos.persistence.model.Booking;
 import com.terrifictacos.terrifictacos.service.BookingService;
 import com.terrifictacos.terrifictacos.web.dto.BookingDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +47,20 @@ public class BookingController {
 //    @PutMapping
 //    public void amendBooking(@RequestBody Booking booking) { bookingService.update(booking); }
 
+    @GetMapping
+    public String getBookings(Model model) {
+        Iterable<Booking> bookings = bookingService.findAll();
+        List<BookingDto> bookingDtos = new ArrayList<>();
+        bookings.forEach(b -> bookingDtos.add(convertToDto(b)));
+        model.addAttribute("bookings", bookingDtos);
+        return "bookings";
+    }
+
+    private BookingDto convertToDto(Booking entity) {
+        BookingDto dto = new BookingDto(entity.getId(), entity.getName(), entity.getDate(), entity.getGuests());
+        return dto;
+    }
+
     @GetMapping(value = "/new")
     public String newBooking(Model model) {
         model.addAttribute("bookings", new BookingDto());
@@ -57,10 +75,9 @@ public class BookingController {
 
         bookingService.save(convertToEntity(booking));
 
-        return  "redirect:/bookings";
+        return "redirect:/bookings";
     }
 
-    @Autowired
     public String getTodaysSpecial() {
         String specials[] = new String[] {"Taco's Supreme", "Burrito Bonzana", "Nacho Mayhem", "Jalapeno Madness"};
         Random random = new Random();
@@ -69,8 +86,7 @@ public class BookingController {
     }
 
     protected Booking convertToEntity(BookingDto dto) {
-        Booking booking = new Booking(dto.getName());
-
+        Booking booking = new Booking(dto.getId(), dto.getName(), dto.getDate(), dto.getGuests());
         return booking;
     }
 }

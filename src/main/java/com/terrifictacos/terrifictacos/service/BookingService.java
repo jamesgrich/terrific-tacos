@@ -11,6 +11,8 @@ public interface BookingService {
 
     Booking save (Booking booking);
 
+    Iterable<Booking> findAll();
+
     void delete (Booking booking);
 
     Booking update (Booking booking);

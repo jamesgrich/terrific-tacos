@@ -5,7 +5,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.util.Objects;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class BookingDto {
 
@@ -16,15 +19,21 @@ public class BookingDto {
     @NotEmpty(message = "Whoops! Looks like you forgot to enter a name")
     private String name;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate date;
+
+    private int guests;
+
     public BookingDto() {
 
     }
 
-    public BookingDto(Long id, String name) {
+    public BookingDto(Long id, String name, LocalDate date, int guests) {
         this.id = id;
         this.name = name;
+        this.date = date;
+        this.guests = guests;
     }
-
 
     public Long getId() {
         return id;
@@ -61,5 +70,21 @@ public class BookingDto {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public int getGuests() {
+        return guests;
+    }
+
+    public void setGuests(int guests) {
+        this.guests = guests;
     }
 }

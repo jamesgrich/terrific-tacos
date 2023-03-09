@@ -27,6 +27,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public Iterable<Booking> findAll() {
+        return bookingRepository.findAll();
+    }
+
+    @Override
     public void delete(Booking booking) {
         bookingRepository.delete(booking);
     }
