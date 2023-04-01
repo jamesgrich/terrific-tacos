@@ -1,24 +1,15 @@
 package com.terrifictacos.terrifictacos.web.controller;
 
 import javax.validation.Valid;
-import java.awt.print.Book;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import com.terrifictacos.terrifictacos.persistence.model.Booking;
 import com.terrifictacos.terrifictacos.service.BookingService;
 import com.terrifictacos.terrifictacos.web.dto.BookingDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping(value = "/bookings")
@@ -31,22 +22,6 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-//    @GetMapping(value = "/{id}")
-//    public Booking findBooking(@PathVariable Long id) {
-//        return bookingService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//    }
-//
-//    @PostMapping
-//    public void createBooking(@RequestBody Booking booking) {
-//        bookingService.save(booking);
-//    }
-//
-//    @DeleteMapping
-//    public void deleteBooking(@RequestBody Booking booking) { bookingService.delete(booking); }
-//
-//    @PutMapping
-//    public void amendBooking(@RequestBody Booking booking) { bookingService.update(booking); }
-
     @GetMapping
     public String getBookings(Model model) {
         Iterable<Booking> bookings = bookingService.findAll();
@@ -56,33 +31,51 @@ public class BookingController {
         return "bookings";
     }
 
-    private BookingDto convertToDto(Booking entity) {
-        BookingDto dto = new BookingDto(entity.getId(), entity.getName(), entity.getDate(), entity.getGuests());
-        return dto;
-    }
-
     @GetMapping(value = "/new")
     public String newBooking(Model model) {
         model.addAttribute("bookings", new BookingDto());
         return "new-booking";
     }
 
-    @PostMapping
+    @PostMapping(value= "/addbooking")
     public String addBooking(@Valid @ModelAttribute("bookings") BookingDto booking, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "new-booking";
         }
 
         bookingService.save(convertToEntity(booking));
-
         return "redirect:/bookings";
     }
 
-    public String getTodaysSpecial() {
-        String specials[] = new String[] {"Taco's Supreme", "Burrito Bonzana", "Nacho Mayhem", "Jalapeno Madness"};
-        Random random = new Random();
-        int index = random.nextInt(specials.length);
-        return specials[index];
+    @GetMapping(value = "/edit/{id}")
+    public String editSingleBooking(@PathVariable Long id, Model model) {
+        Booking booking = bookingService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid booking ID: " + id));
+        model.addAttribute("booking", convertToDto(booking));
+        return "edit-booking";
+    }
+
+    @PostMapping(value = "/edit/{id}")
+    public String updateBooking(@Valid @ModelAttribute("bookings") BookingDto booking, BindingResult result) {
+        if (result.hasErrors()) {
+            return "new-booking";
+        }
+
+        bookingService.save(convertToEntity(booking));
+        return "redirect:/bookings";
+    }
+
+    @GetMapping(value = "/delete/{id}")
+    public String deleteBooking(@PathVariable Long id) {
+        Booking booking = bookingService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid booking ID: " + id));
+        bookingService.delete(booking);
+        return "redirect:/bookings";
+    }
+
+    private BookingDto convertToDto(Booking entity) {
+        BookingDto dto = new BookingDto(entity.getId(), entity.getName(), entity.getDate(), entity.getGuests());
+        return dto;
     }
 
     protected Booking convertToEntity(BookingDto dto) {

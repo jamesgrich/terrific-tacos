@@ -22,7 +22,7 @@ public class Booking {
     @NotEmpty
     private String name;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "dd/mm/yyyy")
     private LocalDate date;
 
     private int guests;

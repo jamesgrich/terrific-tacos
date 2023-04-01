@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Terrific Tacos :: Edit Booking</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div style="text-align: center;">
+    <h2>Edit Booking</h2>
+    <form action="#"
+          th:href="@{bookings/edit/{id}(id=${booking.id})}"
+          th:object="${booking}"
+          method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}"
+                   placeholder="Enter the booking name" required/>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" th:field="*{date}" name="date" required><br>
+        </div>
+        <div class="form-group">
+            <label for="numberOfGuests">Number of Guests</label>
+            <select id="numberOfGuests" th:field="*{guests}" name="guests" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">I have read the terms and conditions</label><br>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"/>
+    </form>
+</div>
+</body>
+</html>

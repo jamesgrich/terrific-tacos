@@ -29,8 +29,8 @@
         <td th:text="${booking.name}"></td>
         <td th:text="${booking.date}"></td>
         <td th:text="${booking.guests}"></td>
-        <td>Edit</td>
-        <td>Delete</td>
+        <td><a th:href="@{bookings/edit/{id}(id=${booking.id})}" class="btn btn-link">Edit</a></td>
+        <td><a th:href="@{bookings/delete/{id}(id=${booking.id})}" class="btn btn-link">Delete</a></td>
     </tr>
     </tbody>
 </table>
